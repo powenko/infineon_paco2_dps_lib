@@ -3,6 +3,10 @@
 
 **infineon_paco2_dps_lib** is a Python library for interfacing with Infineon's PA_CO2 and DPS sensors. This library provides a simple and convenient way to read temperature, pressure, and CO2 concentration data from these sensors.
 
+![PCB Board](IMG_0001.jpg)
+
+This image is a PCB board for this project, which can work on a Raspberry Pi. This board, called the "Infineon Powenko Board," can be purchased at [www.ifroglab.com](http://www.ifroglab.com).
+
 ## Table of Contents
 
 - [Installation](#installation)
