@@ -24,30 +24,32 @@ import smbus2
 I2C_BUS = 1  # I2C bus number
 DPS310_ADDRESSES = [0x77, 0x76]  # Possible I2C addresses for the DPS310 sensor
 
-class DPS:
+class dps:
     def __init__(self):
         self.bus = smbus2.SMBus(I2C_BUS)  # Initialize the I2C bus
-        self.addr = self.find_address()  # Find the address of the sensor
-        self.__correctTemperature()  # Correct the temperature measurement
-        self.__setOversamplingRate()  # Set the oversampling rate
+        self.addr = self.find_address()  # Find the I2C address of the sensor
+        self.__correctTemperature()  # Correct temperature calibration
+        self.__setOversamplingRate()  # Set oversampling rate
 
     def find_address(self):
+        # Try to find the sensor on known addresses
         for address in DPS310_ADDRESSES:
             try:
-                self.bus.read_byte(address)  # Try to read a byte from the address
-                return address  # Return the address if successful
+                self.bus.read_byte(address)
+                return address
             except IOError:
-                continue  # Continue if the address is not found
-        raise Exception("DPS310 sensor not found on any known address")  # Raise an exception if no address is found
+                continue
+        raise Exception("DPS310 sensor not found on any known address")
 
     def getTwosComplement(self, raw_val, length):
+        # Calculate two's complement for signed integer representation
         val = raw_val
-        if raw_val & (1 << (length - 1)):  # Check if the sign bit is set
-            val = raw_val - (1 << length)  # Convert to two's complement
+        if raw_val & (1 << (length - 1)):
+            val = raw_val - (1 << length)
         return val
 
     def __correctTemperature(self):
-        # Perform temperature correction sequence
+        # Correct the temperature readings
         self.bus.write_byte_data(self.addr, 0x0E, 0xA5)
         self.bus.write_byte_data(self.addr, 0x0F, 0x96)
         self.bus.write_byte_data(self.addr, 0x62, 0x02)
@@ -55,14 +57,14 @@ class DPS:
         self.bus.write_byte_data(self.addr, 0x0F, 0x00)
 
     def __setOversamplingRate(self):
-        # Set oversampling rate for temperature and pressure
+        # Set the oversampling rate for temperature and pressure readings
         self.bus.write_byte_data(self.addr, 0x06, 0x26)
         self.bus.write_byte_data(self.addr, 0x07, 0xA6)
         self.bus.write_byte_data(self.addr, 0x08, 0x07)
         self.bus.write_byte_data(self.addr, 0x09, 0x0C)
 
     def __getRawTemperature(self):
-        # Read raw temperature data from sensor
+        # Read raw temperature data from the sensor
         t1 = self.bus.read_byte_data(self.addr, 0x03)
         t2 = self.bus.read_byte_data(self.addr, 0x04)
         t3 = self.bus.read_byte_data(self.addr, 0x05)
@@ -71,7 +73,7 @@ class DPS:
         return t
 
     def __getRawPressure(self):
-        # Read raw pressure data from sensor
+        # Read raw pressure data from the sensor
         p1 = self.bus.read_byte_data(self.addr, 0x00)
         p2 = self.bus.read_byte_data(self.addr, 0x01)
         p3 = self.bus.read_byte_data(self.addr, 0x02)
@@ -80,32 +82,32 @@ class DPS:
         return p
 
     def calcScaledTemperature(self):
-        # Calculate scaled temperature value
+        # Calculate scaled temperature
         raw_t = self.__getRawTemperature()
         scaled_t = raw_t / 1040384  # __kT = 1040384
         return scaled_t
 
     def calcCompTemperature(self, scaled_t):
-        # Calculate compensated temperature value
+        # Calculate compensated temperature
         c0, c1 = self.__getTemperatureCalibrationCoefficients()
         comp_t = c0 * 0.5 + scaled_t * c1
         return comp_t
 
     def calcScaledPressure(self):
-        # Calculate scaled pressure value
+        # Calculate scaled pressure
         raw_p = self.__getRawPressure()
         scaled_p = raw_p / 1040384  # __kP = 1040384
         return scaled_p
 
     def calcCompPressure(self, scaled_p, scaled_t):
-        # Calculate compensated pressure value
+        # Calculate compensated pressure
         c00, c10, c20, c30, c01, c11, c21 = self.__getPressureCalibrationCoefficients()
         comp_p = (c00 + scaled_p * (c10 + scaled_p * (c20 + scaled_p * c30))
                   + scaled_t * (c01 + scaled_p * (c11 + scaled_p * c21)))
         return comp_p
 
     def __getTemperatureCalibrationCoefficients(self):
-        # Read temperature calibration coefficients from sensor
+        # Get temperature calibration coefficients from the sensor
         src10 = self.bus.read_byte_data(self.addr, 0x10)
         src11 = self.bus.read_byte_data(self.addr, 0x11)
         src12 = self.bus.read_byte_data(self.addr, 0x12)
@@ -116,7 +118,7 @@ class DPS:
         return c0, c1
 
     def __getPressureCalibrationCoefficients(self):
-        # Read pressure calibration coefficients from sensor
+        # Get pressure calibration coefficients from the sensor
         src13 = self.bus.read_byte_data(self.addr, 0x13)
         src14 = self.bus.read_byte_data(self.addr, 0x14)
         src15 = self.bus.read_byte_data(self.addr, 0x15)
@@ -155,3 +157,17 @@ class DPS:
         c21 = self.getTwosComplement(c21, 16)
 
         return c00, c10, c20, c30, c01, c11, c21
+
+    def read_temperature(self):
+        # Read and return the compensated temperature
+        scaled_t = self.calcScaledTemperature()
+        temperature = self.calcCompTemperature(scaled_t)
+        return temperature
+
+    def read_pressure(self):
+        # Read and return the compensated pressure
+        scaled_t = self.calcScaledTemperature()
+        scaled_p = self.calcScaledPressure()
+        pressure = self.calcCompPressure(scaled_p, scaled_t)
+        return pressure
+    

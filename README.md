@@ -15,7 +15,7 @@ This image is a PCB board for this project, which can work on a Raspberry Pi. Th
   - [Measuring CO2 with PA_CO2](#measuring-co2-with-pa_co2)
 - [API Reference](#api-reference)
   - [DPS Class](#dps-class)
-  - [PA_CO2 Class](#pa_co2-class)
+  - [paco2 Class](#pa_co2-class)
 - [Contributing](#contributing)
 - [License](#license)
 - [Author](#author)
@@ -41,11 +41,11 @@ pip install .
 The `DPS` class allows you to interface with the Infineon DPS310 pressure sensor. Here is an example of how to use it to read temperature and pressure data:
 
 ```python
-from infineon_paco2_dps_lib import DPS
+from infineon_paco2_dps_lib import dps
 
 def main():
-    # Initialize the DPS sensor
-    dps = DPS()
+    # Initialize the dps sensor
+    dps = dps()
 
     # Read temperature
     temperature = dps.read_temperature()
@@ -61,33 +61,35 @@ if __name__ == "__main__":
 
 ### Measuring CO2 with PA_CO2
 
-The `PA_CO2` class allows you to interface with the Infineon PA_CO2 sensor. Here is an example of how to use it to measure CO2 concentration:
+The `paco2` class allows you to interface with the Infineon PA_CO2 sensor. Here is an example of how to use it to measure CO2 concentration:
 
 ```python
-from infineon_paco2_dps_lib import PA_CO2
+from infineon_paco2_dps_lib import paco2
 
 def main():
-    # Initialize the PA_CO2 sensor
-    co2_sensor = PA_CO2()
+    # Initialize the pa_co2 sensor
+    sensor = paco2()
 
     # Measure CO2 concentration
-    co2_ppm = co2_sensor.measure_co2()
-    print(f"CO2: {co2_ppm} ppm")
+    co2_concentration = sensor.measure_co2()
+    print(f"CO2 Concentration: {co2_concentration:.2f} ppm")
 
 if __name__ == "__main__":
     main()
+
+
 ```
 
 ## API Reference
 
-### DPS Class
+### dps Class
 
-The `DPS` class provides methods to interface with the Infineon DPS310 pressure sensor. This class supports reading temperature and pressure data.
+The `dps` class provides methods to interface with the Infineon DPS310 pressure sensor. This class supports reading temperature and pressure data.
 
 #### Initialization
 
 ```python
-dps = DPS()
+dps = dps()
 ```
 
 This initializes the DPS sensor by setting up the I2C bus and configuring the sensor.
@@ -106,14 +108,14 @@ This initializes the DPS sensor by setting up the I2C bus and configuring the se
   pressure = dps.read_pressure()
   ```
 
-### PA_CO2 Class
+### paco2 Class
 
-The `PA_CO2` class provides methods to interface with the Infineon PA_CO2 sensor. This class supports measuring CO2 concentration.
+The `paco2` class provides methods to interface with the Infineon PA_CO2 sensor. This class supports measuring CO2 concentration.
 
 #### Initialization
 
 ```python
-co2_sensor = PA_CO2()
+co2_sensor = paco2()
 ```
 
 This initializes the PA_CO2 sensor by setting up the I2C bus and configuring the sensor.
@@ -164,7 +166,7 @@ The **infineon_paco2_dps_lib** library is designed to facilitate easy interactio
 
 ### DPS Sensor
 
-The DPS310 is a high-precision pressure sensor capable of measuring temperature and pressure. It is commonly used in applications such as weather stations, altimeters, and other environmental monitoring systems. The DPS class in this library provides methods to initialize the sensor, configure its settings, and read data.
+The DPS310 is a high-precision pressure sensor capable of measuring temperature and pressure. It is commonly used in applications such as weather stations, altimeters, and other environmental monitoring systems. The dps class in this library provides methods to initialize the sensor, configure its settings, and read data.
 
 #### Temperature and Pressure Measurement
 
