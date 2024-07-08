@@ -8,7 +8,7 @@ with open(os.path.join(current_directory, "README.md"), "r", encoding="utf-8") a
 
 setup(
     name='infineon_paco2_dps_lib',
-    version='0.1.6',  # Update the version number
+    version='0.1.7',  # Update the version number
     description='Library for interfacing with Infineon PA_CO2 and DPS sensors',
     long_description=long_description,
     long_description_content_type="text/markdown",  # Ensure this is set to 'text/markdown'
@@ -26,3 +26,11 @@ setup(
     ],
     python_requires='>=3.6',
 )
+"""
+
+python setup.py sdist bdist_wheel
+pip install twine
+twine upload dist/*
+
+
+"""
