@@ -5,7 +5,7 @@
 
 ![PCB Board](https://github.com/powenko/infineon_paco2_dps_lib/raw/master/IMG_0001.jpg)
 
-This image is a PCB board for this project, which can work on a Raspberry Pi. This board, called the "Infineon Powenko Board," can be purchased at [www.ifroglab.com](http://www.ifroglab.com).
+This image is a PCB board for this project, which can work on a Raspberry Pi. This board, called the "Infineon optimus Board," can be purchased at [www.ifroglab.com](http://www.ifroglab.com).
 
 ## Table of Contents
 
@@ -202,3 +202,12 @@ By continuously improving and expanding the library, we aim to meet the evolving
 Join our growing community of developers and contribute to the future of sensor interfacing. Your feedback, contributions, and support are invaluable in making **infineon_paco2_dps_lib** a comprehensive solution for Infineon sensor integration.
 
 Thank you for choosing **infineon_paco2_dps_lib**. We look forward to your contributions and feedback.
+
+
+####  Links
+Infineon optimus Board
+Hard can be purchased at [www.ifroglab.com](http://www.ifroglab.com).
+infineon_paco2_dps_lib GitHub Repository  [Infineon's PA_CO2 and DPS sensors library and example code] (hhttps://github.com/powenko/infineon_paco2_dps_lib)
+infineon_paco2_dps_lib on PyPI  [Python pip library] (https://pypi.org/project/infineon-paco2-dps-lib/)
+infineon_paco2_dps_Server GitHub Repository [Infineon's PA_CO2 and DPS sensors  Server code]  (https://github.com/powenko/infineon_paco2_dps_Server)
+
