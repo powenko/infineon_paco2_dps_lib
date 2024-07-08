@@ -210,7 +210,7 @@ Infineon optimus Board
 
 Hard can be purchased at [www.ifroglab.com](http://www.ifroglab.com).
 
-infineon_paco2_dps_lib GitHub Repository  [Infineon's PA_CO2 and DPS sensors library and example code] (hhttps://github.com/powenko/infineon_paco2_dps_lib)
+infineon_paco2_dps_lib GitHub Repository  [Infineon's PA_CO2 and DPS sensors library and example code] (https://github.com/powenko/infineon_paco2_dps_lib)
 
 infineon_paco2_dps_lib on PyPI  [Python pip library] (https://pypi.org/project/infineon-paco2-dps-lib/)
 
